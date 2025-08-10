@@ -73,7 +73,7 @@
         </div>
 
         <!-- kalo selain regex DAN input teks yg disediain masi kosong, kasi opsi buat upload file txt -->
-        {#if (algorithm === 'kmp' || algorithm === 'bm' || algorithm === 'rk') && !videoInput}
+        {#if (algorithm === 'kmp' || algorithm === 'bm' || algorithm === 'rk') && !keywordsInput}
         <div class="mb-6">
             <label for="keywordsFile" class="block mb-2">Atau, upload file .txt berisi kata kunci:</label>
             <input type="file" id="keywordsFile" accept=".txt" on:change={(e: Event) => { const target = e.target as HTMLInputElement; keywordsFile = target.files?.[0] ?? null; }} class="w-full p-2 bg-[var(--input)] border border-[var(--border)] rounded">
