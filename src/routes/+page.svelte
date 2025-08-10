@@ -67,19 +67,28 @@
         </div>
         
         <!-- input kata kunci -->
+        <!-- ada 2 cara, via kolom input atau upload file .txt (buat selain regex) -->
+        
+        <!-- kolom input -->
+        <!-- kalo udah upload file, kolom ini diilangin -->
+        {#if !keywordsFile}
         <div class="mb-6">
             <label for="keywordsInput" class="block mb-2">Masukkan Kata Kunci:</label>
             <input type="text" id="keywordsInput" bind:value={keywordsInput} class="w-full p-2 bg-[var(--input)] border border-[var(--border)] rounded" placeholder="Kata kunci...">
         </div>
+        {/if}
 
-        <!-- kalo selain regex DAN input teks yg disediain masi kosong, kasi opsi buat upload file txt -->
+        <!-- upload file .txt -->
+        <!-- kalo selain regex DAN kolom input yg disediain masi kosong, kasi opsi buat upload file txt -->
         {#if (algorithm === 'kmp' || algorithm === 'bm' || algorithm === 'rk') && !keywordsInput}
         <div class="mb-6">
-            <label for="keywordsFile" class="block mb-2">Atau, upload file .txt berisi kata kunci:</label>
+            <p>atau</p>
+        </div>
+        <div class="mb-6">
+            <label for="keywordsFile" class="block mb-2">Upload file .txt berisi kata kunci:</label>
             <input type="file" id="keywordsFile" accept=".txt" on:change={(e: Event) => { const target = e.target as HTMLInputElement; keywordsFile = target.files?.[0] ?? null; }} class="w-full p-2 bg-[var(--input)] border border-[var(--border)] rounded">
         </div>
         {/if}
-        <!-- else, upload .txt -->
 
         <button on:click={handleDetectComments} class="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded hover:bg-[var(--primary-hover)]">Deteksi Komentar</button>
         {#if statusMessage}
