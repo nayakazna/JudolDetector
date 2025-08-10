@@ -7,6 +7,7 @@
     // buat fitur utama
     let videoInput = '';
     let algorithm = 'regex';
+    let keywordsInput = '';
     let keywordsFile: File | null = null;
     let statusMessage = 'Tidak ada komentar yang ditemukan.';
     let results: any[] = [];
@@ -68,7 +69,7 @@
         <!-- input kata kunci -->
         <div class="mb-6">
             <label for="keywordsInput" class="block mb-2">Masukkan Kata Kunci:</label>
-            <input type="text" id="keywordsInput" bind:value={videoInput} class="w-full p-2 bg-[var(--input)] border border-[var(--border)] rounded" placeholder="Kata kunci...">
+            <input type="text" id="keywordsInput" bind:value={keywordsInput} class="w-full p-2 bg-[var(--input)] border border-[var(--border)] rounded" placeholder="Kata kunci...">
         </div>
 
         <!-- kalo selain regex DAN input teks yg disediain masi kosong, kasi opsi buat upload file txt -->
