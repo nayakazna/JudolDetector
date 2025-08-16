@@ -8,6 +8,7 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
+		"preserveSymlinks": true,
 		"strict": true,
 		"moduleResolution": "bundler"
 	}

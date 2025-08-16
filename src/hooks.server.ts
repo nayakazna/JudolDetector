@@ -1,0 +1,15 @@
+import type { Handle } from '@sveltejs/kit';
+import { SvelteKitAuth } from "@auth/sveltekit";
+import Google from "@auth/sveltekit/providers/google";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "$env/static/private";
+
+const auth = SvelteKitAuth({
+    providers: [
+        Google({
+        clientId: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET
+        })
+    ]
+});
+
+export const handle = auth.handle;
