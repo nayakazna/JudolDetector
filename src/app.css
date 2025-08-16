@@ -1,5 +1,97 @@
 @import "tailwindcss";
 
+
+/* dicomot dari https://colorffy.com/dark-theme-generator?colors=00BAB1-121212 */
+:root {
+  --dark: #121212;
+  --light: #ffffff;
+  --tonal-1: #182120;
+  --tonal-2 :#2d3635;
+  --tonal-3 :#444c4b;
+  --tonal-4 :#5c6362;
+  --tonal-5 :#757b7a;
+  --tonal-6 :#8f9493;
+  --surface-1: #121212;
+  --surface-2: #282828;
+  --surface-3: #3f3f3f;
+  --surface-4: #575757;
+  --surface-5: #717171;
+  --surface-6: #8b8b8b;
+  --primary-1: #00bab1;
+  --primary-2: #44c2b9;
+  --primary-3: #63cac2;
+  --primary-4: #7ed2ca;
+  --primary-5: #95d9d3;
+  --primary-6: #abe1dc;
+  
+  --background: var(--surface-1);
+  --foreground: var(--light);
+  --hover: #6161613d;
+  --border: var(--surface-3);
+}
+
+.label {
+  color: var(--light);
+}
+
+.helper {
+  color: var(--surface-5);
+}
+
+.input {
+  background-color: var(--surface-3);
+  border: 0px;
+  color: var(--light);
+}
+
+.input::placeholder {
+  color: var(--surface-4);
+}
+
+.dropdown {
+  background-color: var(--surface-3);
+  border: 0px;
+  color: var(--light);
+}
+
+@plugin 'flowbite/plugin';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #fff5f2;
+  --color-primary-100: #fff1ee;
+  --color-primary-200: #ffe4de;
+  --color-primary-300: #ffd5cc;
+  --color-primary-400: #ffbcad;
+  --color-primary-500: #fe795d;
+  --color-primary-600: #ef562f;
+  --color-primary-700: #eb4f27;
+  --color-primary-800: #cc4522;
+  --color-primary-900: #a5371b;
+
+  --color-secondary-50: #f0f9ff;
+  --color-secondary-100: #e0f2fe;
+  --color-secondary-200: #bae6fd;
+  --color-secondary-300: #7dd3fc;
+  --color-secondary-400: #38bdf8;
+  --color-secondary-500: #0ea5e9;
+  --color-secondary-600: #0284c7;
+  --color-secondary-700: #0369a1;
+  --color-secondary-800: #075985;
+  --color-secondary-900: #0c4a6e;
+}
+
+@source "../node_modules/flowbite-svelte/dist";
+@source "../node_modules/flowbite-svelte-icons/dist";
+
+@layer base {
+  /* disable chrome cancel button */
+  input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
 @font-face {
     font-family: 'Plus Jakarta Sans';
     src: url('/fonts/pjs.ttf') format('truetype');
@@ -12,40 +104,4 @@
     src: url('/fonts/pjs-it.ttf') format('truetype');
     font-weight: normal;
     font-style: italic;
-}
-
-
-/* dicomot dari https://ui.shadcn.com/docs/theming */
-:root {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.92 0.004 286.32);
-    --primary-foreground: oklch(0.21 0.006 285.885);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0.016 285.938);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.552 0.016 285.938);
 }
