@@ -3,12 +3,18 @@
     import { fly } from "svelte/transition";
     import { Label, Input, Helper, Select, Toast, Button, Dropdown, Radio, DropdownItem, GradientButton } from 'flowbite-svelte';
     import { ChevronDownOutline, ExclamationCircleSolid } from "flowbite-svelte-icons";
+    
     import Fileupload from '$lib/components/Fileupload.svelte';
+    import {validateVideo, YOUTUBE_URL_REGEX, errorMessage} from './validator';
+    import {findMatches} from './algo';
+    
     import { signIn, signOut } from "@auth/sveltekit/client";
     import { base } from '$app/paths';
     import { page } from '$app/stores';
+    import { invalidateAll } from '$app/navigation';
 
     // === Variabel buat state === //
+    
     // buat fitur utama
     let videoLink = $state("");
     let linkOrId = $state("link");
@@ -22,10 +28,22 @@
         { value: 'rk', name: 'Rabin-Karp' }
     ];
 
+    let statusMessage = $state("Belum ada teks.");
     let keywordsInput = $state("");
     let keywordsFile = $state<FileList | null>(null);
-    let results: any[] = [];
+    let results = $state<any[]>([]);
     
+    // buat pagination
+    let currentPage = $state(1);
+    let totalPages = $derived(Math.ceil(results.length / 10));
+    let paginatedResults = $derived(results.slice((currentPage - 1) * 10, currentPage * 10));
+    let commentsContainer = $state<HTMLDivElement | null>(null);
+    $effect(() => {
+        if (commentsContainer !== null) {
+            commentsContainer.scrollTop = commentsContainer.scrollHeight;
+        }
+    });
+
     // buat error
     let showErrorToast = $state(false);
     let errorToastMessage = $state("");
@@ -41,30 +59,6 @@
     let deleteVideoLink = $state("");
 
     // === Fungsi-fungsi === //
-    // regex yutub dari sini https://gist.github.com/afeld/1254889?permalink_comment_id=4528726#gistcomment-4528726
-    const YOUTUBE_ID_REGEX = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/;
-    const JUDOL_REGEX = /[a-zA-Z]+[0-9]{2,3}/g;
-    
-    // function
-    function validateVideoId(id: string) {
-    }
-
-    function validateVideoLink(url: string) {
-        return YOUTUBE_ID_REGEX.test(url);
-    }
-
-    function validateVideo(input: string, isLink: boolean) {
-        if (!input) {
-            pushErrorNotification("Input video tidak boleh kosong.");
-            return true;
-        }
-        if (isLink) {
-            return validateVideoLink(input);
-        } else {
-            return validateVideoId(input);
-        }
-    }
-
     function pushErrorNotification(message: string) {
         errorToastMessage = message;
         showErrorToast = true;
@@ -74,46 +68,78 @@
         }, 5000);
     }
 
-    function normalizeText(text: string) {
-    }
-
-    function findMatches(text: string, algo: string, keywords: string[] | null) {
-
-    }
-
-
-    const handleAuthenticate = () => {
+    const handleAuthenticate = async () => {
+        await signIn('google');
+        await invalidateAll();
     };
 
     const handleDetectComments = async () => {
         if (!validateVideo(videoLink, linkOrId === 'link')) {
-            pushErrorNotification("URL video YouTube tidak valid.");
+            pushErrorNotification(errorMessage);
             return;
         }
-
         if (!algo) {
             pushErrorNotification("Algoritma belum dipilih.");
             return;
         }
-
-
         
+        let videoId = "";
+        if (linkOrId === 'link') {
+            const match = videoLink.match(YOUTUBE_URL_REGEX);
+            if (match) {
+                videoId = match[1];
+            } 
+        } else videoId = videoLink.trim();
+        
+        statusMessage = "Mendeteksi komentar...";
+        results = [];
+        currentPage = 1;
+
+        try {
+            let total = 0;
+
+            const url: string = `/api/comments?videoId=${videoId}`;
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (!res.ok) {
+                statusMessage = data.error || "Gagal mengambil komentar.";
+                return;
+            }
+
+            console.log(data);
+
+            // string matching di sini
+            for (const c of data) {
+                if (findMatches(c.text, algo, keywordsInput ? keywordsInput.split(',') : null)) {
+                    console.log(c);
+                    results.push(c);
+                }
+            }
+
+            total += data.length;
+            statusMessage = `Memuat ${total} komentar...`;
+
+
+            if (results.length === 0) {
+                statusMessage = "Tidak ada komentar judol yang ditemukan.";
+            } else {
+                statusMessage = `${results.length} komentar mencurigakan ditemukan.`;
+            }
+        } catch (err) {
+            console.error(err);
+            statusMessage = "Terjadi error saat mengambil komentar.";
+        }
     };
 
     const handleInsertComments = async () => {
-        if (!validateVideo(videoLink, linkOrId === 'link')) {
-            pushErrorNotification("URL video YouTube tidak valid.");
-            return;
-        }
+        if (!validateVideo(videoLink, linkOrId === 'link')) return;
 
         
     };
 
     const handleDeleteComments = async () => {
-        if (!validateVideo(videoLink, linkOrId === 'link')) {
-            pushErrorNotification("URL video YouTube tidak valid.");
-            return;
-        }
+        if (!validateVideo(videoLink, linkOrId === 'link')) return;
 
         
     };
@@ -136,11 +162,11 @@
 
             <!-- add radio button -->
             <div class="flex items-center justify-center mb-2 gap-20">
-                <div class="flex items-center gap-2">   
+                <div class="flex ">   
                     <Radio id="link" name="videoSource" value="link" bind:group={linkOrId} />
                     <Label class="label ml-2" for="link">Link</Label>
                 </div>
-                <div class="flex items-center">   
+                <div class="flex ">   
                     <Radio id="id" name="videoSource" value="id" bind:group={linkOrId} />
                     <Label class="label ml-2" for="id">ID</Label>
                 </div>
@@ -242,6 +268,46 @@
 
         <!-- button buat deteksi komentar -->
         <GradientButton color="greenToBlue" class="w-full" onclick={handleDetectComments}>Deteksi Komentar</GradientButton>
+
+        <!-- status message -->
+        {#if statusMessage}
+        <div class="mt-4">
+            <p class="text-sm text-[var(--muted-foreground)]">{statusMessage}</p>
+        </div>
+        {/if}
+
+        <!-- daftar komentar -->
+        {#if results.length > 0}
+        <div class="mt-6 w-full max-w-3xl mx-auto">
+            <h3 class="text-xl font-semibold mb-4">Komentar Terdeteksi</h3>
+
+            <!-- scroll -->
+            <div 
+                bind:this={commentsContainer}
+                class="max-h-96 overflow-y-auto pr-2"
+            >
+                {#each paginatedResults as c}
+                <div class="text-sm p-4 mb-4 border rounded-lg bg-[var(--surface-2)] border-[var(--border)]">
+                    <h3><b>{c.author}</b></h3>
+                    <p>{c.text}</p>
+                </div>
+                {/each}
+            </div>
+
+            <!-- prev next -->
+            <div class="flex justify-between items-center mt-4">
+                <Button disabled={currentPage === 1} onclick={() => currentPage--}>
+                    Prev
+                </Button>
+                <span>Halaman {currentPage} dari {totalPages}</span>
+                <Button disabled={currentPage === totalPages} onclick={() => currentPage++}>
+                    Next
+                </Button>
+            </div>
+        </div>
+        {/if}
+
+
     </div>
 
     <!-- box buat fitur bonus -->
@@ -271,7 +337,7 @@
             <div class="mb-6">
                 <h3 class="text-xl font-semibold mb-2">Login, Gan!</h3>
                 <p class="mb-6">Fitur bonus hanya bisa diakses setelah login. </p>
-                <GradientButton color="greenToBlue" class="w-full input flex items-center justify-center gap-2" onclick={() => signIn('google')}>
+                <GradientButton color="greenToBlue" class="w-full input flex items-center justify-center gap-2" onclick={() => handleAuthenticate()}>
                     <svg class="h-5 w-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#ffffff" d="M44.5 20H24v8.5h11.8c-.83 5.4-4.84 8.7-10.8 8.7-6.57 0-11.97-5.4-11.97-11.97s5.4-11.97 11.97-11.97c3.34 0 5.86 1.44 7.6 3.03l5.8-5.8c-3.56-3.32-8.15-5.33-13.4-5.33-11.23 0-20.37 9.14-20.37 20.37s9.14 20.37 20.37 20.37c11.3 0 19.8-8.13 19.8-19.8 0-1.3-.12-2.58-.33-3.8z"/>
                     </svg>
