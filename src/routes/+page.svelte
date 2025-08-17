@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { Label, Input, Helper, Select, Button, Dropdown, DropdownItem, GradientButton } from 'flowbite-svelte';
-    import { ChevronDownOutline } from "flowbite-svelte-icons";
+    import { fly } from "svelte/transition";
+    import { Label, Input, Helper, Select, Toast, Button, Dropdown, Radio, DropdownItem, GradientButton } from 'flowbite-svelte';
+    import { ChevronDownOutline, ExclamationCircleSolid } from "flowbite-svelte-icons";
     import Fileupload from '$lib/components/Fileupload.svelte';
     import { signIn, signOut } from "@auth/sveltekit/client";
     import { base } from '$app/paths';
@@ -10,7 +11,7 @@
     // === Variabel buat state === //
     // buat fitur utama
     let videoLink = $state("");
-    let youtubeAPI = $state("");
+    let linkOrId = $state("link");
     let isDropdownOpen = $state(false);
     let algo = $state("");
     let algoName = $state("Pilih algoritma...");
@@ -23,8 +24,11 @@
 
     let keywordsInput = $state("");
     let keywordsFile = $state<FileList | null>(null);
-    let statusMessage = 'Tidak ada komentar yang ditemukan.';
     let results: any[] = [];
+    
+    // buat error
+    let showErrorToast = $state(false);
+    let errorToastMessage = $state("");
     
     // buat bonus
     const { session } = $page.data;
@@ -37,11 +41,44 @@
     let deleteVideoLink = $state("");
 
     // === Fungsi-fungsi === //
+    // regex yutub dari sini https://gist.github.com/afeld/1254889?permalink_comment_id=4528726#gistcomment-4528726
+    const YOUTUBE_ID_REGEX = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/;
     const JUDOL_REGEX = /[a-zA-Z]+[0-9]{2,3}/g;
+    
+    // function
+    function validateVideoId(id: string) {
+    }
+
+    function validateVideoLink(url: string) {
+        return YOUTUBE_ID_REGEX.test(url);
+    }
+
+    function validateVideo(input: string, isLink: boolean) {
+        if (!input) {
+            pushErrorNotification("Input video tidak boleh kosong.");
+            return true;
+        }
+        if (isLink) {
+            return validateVideoLink(input);
+        } else {
+            return validateVideoId(input);
+        }
+    }
+
+    function pushErrorNotification(message: string) {
+        errorToastMessage = message;
+        showErrorToast = true;
+
+        setTimeout(() => {
+        showErrorToast = false;
+        }, 5000);
+    }
+
     function normalizeText(text: string) {
     }
 
     function findMatches(text: string, algo: string, keywords: string[] | null) {
+
     }
 
 
@@ -49,12 +86,36 @@
     };
 
     const handleDetectComments = async () => {
+        if (!validateVideo(videoLink, linkOrId === 'link')) {
+            pushErrorNotification("URL video YouTube tidak valid.");
+            return;
+        }
+
+        if (!algo) {
+            pushErrorNotification("Algoritma belum dipilih.");
+            return;
+        }
+
+
+        
     };
 
     const handleInsertComments = async () => {
+        if (!validateVideo(videoLink, linkOrId === 'link')) {
+            pushErrorNotification("URL video YouTube tidak valid.");
+            return;
+        }
+
+        
     };
 
     const handleDeleteComments = async () => {
+        if (!validateVideo(videoLink, linkOrId === 'link')) {
+            pushErrorNotification("URL video YouTube tidak valid.");
+            return;
+        }
+
+        
     };
 
 </script>
@@ -71,7 +132,21 @@
     <!-- form untuk URL vidio yutub -->
     <div class="mb-6 w-full max-w-3xl mx-auto">
         <Label class="label block mb-2" for="videoLink">
-            ID/URL Video YouTube
+            <h1 class="text-2xl font-bold mb-2">Video YouTube</h1>
+
+            <!-- add radio button -->
+            <div class="flex items-center justify-center mb-2 gap-20">
+                <div class="flex items-center gap-2">   
+                    <Radio id="link" name="videoSource" value="link" bind:group={linkOrId} />
+                    <Label class="label ml-2" for="link">Link</Label>
+                </div>
+                <div class="flex items-center">   
+                    <Radio id="id" name="videoSource" value="id" bind:group={linkOrId} />
+                    <Label class="label ml-2" for="id">ID</Label>
+                </div>
+            </div>
+
+            {#if linkOrId === 'link'}
             <Input 
                 id="videoLink" 
                 class="input w-full" 
@@ -81,8 +156,23 @@
                 bind:value={videoLink} 
             />
             <Helper class="helper mt-2">
-                Masukkan tautan video YouTube yang mau diperiksa. Anda juga bisa memasukkan ID dari video tersebut, misalnya <code>abc123xyz</code> dari <code>https://www.youtube.com/watch?v=abc123xyz</code>.
+                Masukkan tautan video YouTube yang mau diperiksa.
             </Helper>
+            {:else}
+            <Input 
+                id="videoLink" 
+                class="input w-full" 
+                name="yutub" 
+                required 
+                placeholder="Masukkan ID video..." 
+                bind:value={videoLink} 
+            />
+            <Helper class="helper mt-2">
+                Masukkan ID dari video yang mau diperiksa, misalnya <code>abc123xyz</code> dari <code>https://www.youtube.com/watch?v=abc123xyz</code>.
+            </Helper>
+            {/if}
+
+
         </Label>
     </div>
 
@@ -152,11 +242,6 @@
 
         <!-- button buat deteksi komentar -->
         <GradientButton color="greenToBlue" class="w-full" onclick={handleDetectComments}>Deteksi Komentar</GradientButton>
-        
-        <!-- status message -->
-        {#if statusMessage}
-            <p class="mt-4 text-sm text-[var(--muted-foreground)]">{statusMessage}</p>
-        {/if}
     </div>
 
     <!-- box buat fitur bonus -->
@@ -204,6 +289,9 @@
             <Label class="label block mb-2" for="insertFile">
                 File .txt Komentar
                 <Fileupload id="insertFile" name="insertFile" accept=".txt" bind:files={insertFile} />
+                <Helper class="helper mt-2">
+                    Masukkan file .txt yang berisi komentar yang ingin disisipkan. Pisahkan antarkomentar dengan tanda titik koma (;).
+                </Helper>
             </Label>
             <GradientButton color="greenToBlue" class="w-full mt-2" onclick={handleInsertComments}>Sisipkan Komentar</GradientButton>
         </div>
@@ -218,6 +306,19 @@
         </div>
         {/if}
     </div>
+
+    <!-- ewow -->
+    {#if showErrorToast}
+    <div class="fixed bottom-4 right-4 z-50 " in:fly={{ y: 20, duration: 300, delay: 300 }}>
+    <Toast color={undefined} class="bg-[var(--surface-2)] text-[var(--foreground)] shadow-lg border border-[var(--border)]">
+        {#snippet icon()}
+        <ExclamationCircleSolid class="h-5 w-5" />
+        <span class="sr-only">Warning icon</span>
+        {/snippet}
+        {errorToastMessage}
+    </Toast>
+    </div>
+    {/if}
 </div>
 
 <style>
