@@ -43,6 +43,8 @@
             commentsContainer.scrollTop = commentsContainer.scrollHeight;
         }
     });
+    
+    console.log("session", $page.data.session);
 
     // buat error
     let showErrorToast = $state(false);
@@ -51,12 +53,11 @@
     // buat bonus
     const { session } = $page.data;
     let isAuthenticated = $derived(!!session);
+    let hasJudolComments = $derived(results.length > 0);
     let user = $derived(() => session?.user);
     
     let insertVideoLink = $state("");
     let insertFile = $state<File | null>(null);
-
-    let deleteVideoLink = $state("");
 
     // === Fungsi-fungsi === //
     function pushErrorNotification(message: string) {
@@ -107,12 +108,9 @@
                 return;
             }
 
-            console.log(data);
-
             // string matching di sini
             for (const c of data) {
                 if (findMatches(c.text, algo, keywordsInput ? keywordsInput.split(',') : null)) {
-                    console.log(c);
                     results.push(c);
                 }
             }
@@ -138,11 +136,31 @@
         
     };
 
-    const handleDeleteComments = async () => {
-        if (!validateVideo(videoLink, linkOrId === 'link')) return;
+    async function handleDeleteComments() {
+        if (!hasJudolComments) return;
+        const commentIds = results.map(r => r.commentId);
 
-        
-    };
+        try {
+            const res = await fetch('/api/comments', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ commentIds }),
+            credentials: 'include'
+            });
+
+            if (!res.ok) {
+            throw new Error(`Failed to delete: ${res.status}`);
+            }
+
+            const data = await res.json();
+            statusMessage = `Deleted ${data.deleted} comments`;
+            results = []; // reset
+        } catch (err) {
+            console.error(err);
+            statusMessage = "Error deleting comments";
+        }
+    }
+
 
 </script>
 <!-- main -->
@@ -278,7 +296,7 @@
 
         <!-- daftar komentar -->
         {#if results.length > 0}
-        <div class="mt-6 w-full max-w-3xl mx-auto">
+        <div class="mt-6 mb-6 w-full max-w-3xl mx-auto">
             <h3 class="text-xl font-semibold mb-4">Komentar Terdeteksi</h3>
 
             <!-- scroll -->
@@ -296,24 +314,49 @@
 
             <!-- prev next -->
             <div class="flex justify-between items-center mt-4">
-                <Button disabled={currentPage === 1} onclick={() => currentPage--}>
+                <GradientButton color="greenToBlue" disabled={currentPage === 1} onclick={() => currentPage--}>
                     Prev
-                </Button>
+                </GradientButton>
                 <span>Halaman {currentPage} dari {totalPages}</span>
-                <Button disabled={currentPage === totalPages} onclick={() => currentPage++}>
+                <GradientButton color="greenToBlue" disabled={currentPage === totalPages} onclick={() => currentPage++}>
                     Next
-                </Button>
+                </GradientButton>
             </div>
         </div>
         {/if}
+        
+        <div class="border-b border-[var(--border)] my-4"></div>
 
+        <!-- fitur bonusnya -->
+        {#if isAuthenticated}
+        <!-- insert -->
+        <div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">Sisipkan Komentar</h3>
+            <Label class="label block mb-2" for="insertFile">
+                File .txt Komentar
+                <Fileupload id="insertFile" name="insertFile" accept=".txt" bind:files={insertFile} />
+                <Helper class="helper mt-2">
+                    Masukkan file .txt yang berisi komentar yang ingin disisipkan. Pisahkan antarkomentar dengan tanda titik koma (;).
+                </Helper>
+            </Label>
+            <GradientButton color="greenToBlue" class="w-full mt-2" onclick={handleInsertComments} disabled={true}>Sisipkan Komentar</GradientButton>
+        </div>
+        
+
+        <!-- del -->
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Hapus Komentar</h3>
+            <p class="text-gray-200 mb-4">Ini akan menghapus semua komentar yang terdeteksi "judol" dari video Anda. Jalankan "Deteksi Komentar" dulu. </p>
+            <GradientButton color="greenToBlue" class="w-full" onclick={handleDeleteComments} disabled={true}>Hapus Semua Komentar Terdeteksi</GradientButton>
+        </div>
+        {/if}
 
     </div>
 
-    <!-- box buat fitur bonus -->
+    <!-- login -->
 
     <div class="bg-[var(--surface-2)] p-8 md:p-12 rounded-2xl w-full max-w-3xl backdrop-blur-md mx-auto border border-[var(--border)] shadow-md mt-6">
-        <h2 class="text-2xl font-bold mb-6">Fitur Bonus</h2>
+        <h2 class="text-2xl font-bold mb-6">Autentikasi</h2>
         
         <!-- login gan -->
         <div class="mb-6">
@@ -335,8 +378,8 @@
             </div>
             {:else}
             <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-2">Login, Gan!</h3>
-                <p class="mb-6">Fitur bonus hanya bisa diakses setelah login. </p>
+                <h3 class="text-xl font-semibold mb-2">Otentikasi</h3>
+                <p class="mb-6">Fitur bonus (menyisipkan dan menghapus komentar) hanya bisa diakses setelah login. </p>
                 <GradientButton color="greenToBlue" class="w-full input flex items-center justify-center gap-2" onclick={() => handleAuthenticate()}>
                     <svg class="h-5 w-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#ffffff" d="M44.5 20H24v8.5h11.8c-.83 5.4-4.84 8.7-10.8 8.7-6.57 0-11.97-5.4-11.97-11.97s5.4-11.97 11.97-11.97c3.34 0 5.86 1.44 7.6 3.03l5.8-5.8c-3.56-3.32-8.15-5.33-13.4-5.33-11.23 0-20.37 9.14-20.37 20.37s9.14 20.37 20.37 20.37c11.3 0 19.8-8.13 19.8-19.8 0-1.3-.12-2.58-.33-3.8z"/>
@@ -346,31 +389,6 @@
             </div>
             {/if}
         </div>
-
-        <!-- fitur bonusnya -->
-        {#if isAuthenticated}
-        <!-- insert -->
-        <div class="mb-6">
-            <h3 class="text-xl font-semibold mb-2">Sisipkan Komentar</h3>
-            <Label class="label block mb-2" for="insertFile">
-                File .txt Komentar
-                <Fileupload id="insertFile" name="insertFile" accept=".txt" bind:files={insertFile} />
-                <Helper class="helper mt-2">
-                    Masukkan file .txt yang berisi komentar yang ingin disisipkan. Pisahkan antarkomentar dengan tanda titik koma (;).
-                </Helper>
-            </Label>
-            <GradientButton color="greenToBlue" class="w-full mt-2" onclick={handleInsertComments}>Sisipkan Komentar</GradientButton>
-        </div>
-        
-        <div class="border-b border-[var(--border)] my-4"></div>
-
-        <!-- del -->
-        <div>
-            <h3 class="text-xl font-semibold mb-2">Hapus Komentar Judol</h3>
-            <p class="text-gray-200 mb-4">Ini akan menghapus semua komentar yang terdeteksi "judol" dari video Anda.</p>
-            <GradientButton color="greenToBlue" class="w-full" onclick={handleDeleteComments}>Hapus Komentar</GradientButton>
-        </div>
-        {/if}
     </div>
 
     <!-- ewow -->

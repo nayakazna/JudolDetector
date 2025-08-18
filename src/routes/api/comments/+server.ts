@@ -1,5 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { YOUTUBE_API_KEY } from '$env/static/private';
+import { google, youtube_v3 } from "googleapis";
+
+function getYouTubeClient(accessToken: string): youtube_v3.Youtube {
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({ access_token: accessToken });
+    google.options({ auth: oauth2Client });
+    return google.youtube("v3");
+}
 
 // GET
 export async function GET({ url }) {
@@ -67,9 +75,6 @@ export async function POST({ request }) {
         if (!videoId || !Array.isArray(comments) || comments.length === 0) {
             return json({ error: 'VideoId atau comments tidak valid!' }, { status: 400 });
         }
-
-        // TODO: Call YouTube API "commentThreads.insert"
-        // Placeholder response:
         return json({
             message: `Inserted ${comments.length} comments into video ${videoId}`
         });
@@ -79,22 +84,31 @@ export async function POST({ request }) {
     }
 }
 
+
 // DELETE
-export async function DELETE({ request }) {
-    try {
-        const { videoId } = await request.json();
+export async function DELETE({ request, locals }) {
+    const session = await locals.auth();
 
-        if (!videoId) {
-            return json({ error: 'VideoId kosong!' }, { status: 400 });
-        }
-
-        // TODO: Call YouTube API "comments.delete"
-        // Placeholder response:
-        return json({
-            message: `Deleted all detected "judol" comments from video ${videoId}`
-        });
-    } catch (err) {
-        console.error('Delete error:', err);
-        return json({ error: 'Internal server error' }, { status: 500 });
+    if (!session?.user?.accessToken) {
+        return new Response("Unauthorized", { status: 401 });
     }
+
+    const { commentIds } = await request.json();
+    if (!commentIds?.length) {
+        return new Response("No comments to delete", { status: 400 });
+    }
+
+    const youtube = getYouTubeClient(session.user.accessToken);
+
+    let deleted = 0;
+    for (const ids of commentIds) {
+        try {
+            youtube.comments.delete({ id: ids });
+            deleted++;
+        } catch (e) {
+            console.error("Failed to delete comment", ids, e);
+        }
+    }
+
+    return json({ deleted });
 }

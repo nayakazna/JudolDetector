@@ -1,0 +1,296 @@
+{
+  "kind": "youtube#commentThreadListResponse",
+  "etag": "TYONZv0lQphCVTDrNrf2Kzi0-wQ",
+  "pageInfo": {
+    "totalResults": 4,
+    "resultsPerPage": 100
+  },
+  "items": [
+    {
+      "kind": "youtube#commentThread",
+      "etag": "mMXmMQ9Rrc87F0shdCj4m6740-U",
+      "id": "Ugzu_MixvpeZoeFB5s54AaABAg",
+      "snippet": {
+        "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+        "videoId": "nWWCIhCfnVU",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "tMPBTuHAOvuDl2OrNzuwPKf73G4",
+          "id": "Ugzu_MixvpeZoeFB5s54AaABAg",
+          "snippet": {
+            "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+            "videoId": "nWWCIhCfnVU",
+            "textDisplay": "𝔤𝔞𝔠𝔬𝔯𝔯999",
+            "textOriginal": "𝔤𝔞𝔠𝔬𝔯𝔯999",
+            "authorDisplayName": "@nayakazna",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+            "authorChannelId": {
+              "value": "UC3KOQaedol_LoewtIs0ImYg"
+            },
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 0,
+            "publishedAt": "2025-08-17T21:42:09Z",
+            "updatedAt": "2025-08-17T21:42:09Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 3,
+        "isPublic": true
+      },
+      "replies": {
+        "comments": [
+          {
+            "kind": "youtube#comment",
+            "etag": "apH_fltf8a1BhDqio8O7BwGf-UA",
+            "id": "Ugzu_MixvpeZoeFB5s54AaABAg.ALwgYw4ajEyALwgZxOmzsQ",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "ⓖⓐⓒⓞⓡⓡ⑨⑨⑨",
+              "textOriginal": "ⓖⓐⓒⓞⓡⓡ⑨⑨⑨",
+              "parentId": "Ugzu_MixvpeZoeFB5s54AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T21:42:18Z",
+              "updatedAt": "2025-08-17T21:42:18Z"
+            }
+          },
+          {
+            "kind": "youtube#comment",
+            "etag": "duro8-1exfUbIuxmkonRWp9yFRA",
+            "id": "Ugzu_MixvpeZoeFB5s54AaABAg.ALwgYw4ajEyALwg_mzyDyE",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "🅖🅐🅒🅞🅡🅡➒➒➒",
+              "textOriginal": "🅖🅐🅒🅞🅡🅡➒➒➒",
+              "parentId": "Ugzu_MixvpeZoeFB5s54AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T21:42:25Z",
+              "updatedAt": "2025-08-17T21:42:25Z"
+            }
+          },
+          {
+            "kind": "youtube#comment",
+            "etag": "WMErAr8iFzBiJeOYlRlj8sPlkYQ",
+            "id": "Ugzu_MixvpeZoeFB5s54AaABAg.ALwgYw4ajEyALwgaMAFVch",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "ɢᴀᴄᴏʀʀ999",
+              "textOriginal": "ɢᴀᴄᴏʀʀ999",
+              "parentId": "Ugzu_MixvpeZoeFB5s54AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T21:42:29Z",
+              "updatedAt": "2025-08-17T21:42:29Z"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "youtube#commentThread",
+      "etag": "jEt-Czd2cOtQxqGdOihxuhTzSP0",
+      "id": "UgwmMhPcH4EpIWw12KF4AaABAg",
+      "snippet": {
+        "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+        "videoId": "nWWCIhCfnVU",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "pR38C0j6R-Q0HSjloK1E111xlQI",
+          "id": "UgwmMhPcH4EpIWw12KF4AaABAg",
+          "snippet": {
+            "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+            "videoId": "nWWCIhCfnVU",
+            "textDisplay": "ℊ𝒶𝒸ℴ𝓇𝓇999",
+            "textOriginal": "ℊ𝒶𝒸ℴ𝓇𝓇999",
+            "authorDisplayName": "@nayakazna",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+            "authorChannelId": {
+              "value": "UC3KOQaedol_LoewtIs0ImYg"
+            },
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 0,
+            "publishedAt": "2025-08-17T21:41:51Z",
+            "updatedAt": "2025-08-17T21:41:51Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 0,
+        "isPublic": true
+      }
+    },
+    {
+      "kind": "youtube#commentThread",
+      "etag": "r6lGOS2TIb7LVUMdG3SbZITTIo0",
+      "id": "UgyuCtI9qDDFK66DWoh4AaABAg",
+      "snippet": {
+        "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+        "videoId": "nWWCIhCfnVU",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "6v4CUR7BGf-XZDsoEl_-79I31fQ",
+          "id": "UgyuCtI9qDDFK66DWoh4AaABAg",
+          "snippet": {
+            "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+            "videoId": "nWWCIhCfnVU",
+            "textDisplay": "gacorr999",
+            "textOriginal": "gacorr999",
+            "authorDisplayName": "@nayakazna",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+            "authorChannelId": {
+              "value": "UC3KOQaedol_LoewtIs0ImYg"
+            },
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 0,
+            "publishedAt": "2025-08-17T11:12:59Z",
+            "updatedAt": "2025-08-17T11:12:59Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 2,
+        "isPublic": true
+      },
+      "replies": {
+        "comments": [
+          {
+            "kind": "youtube#comment",
+            "etag": "K3PkZdccZlFEXlR96KuyXcVMolk",
+            "id": "UgyuCtI9qDDFK66DWoh4AaABAg.ALvZYhZQrb-ALw__uJOnEW",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "setuju22",
+              "textOriginal": "setuju22",
+              "parentId": "UgyuCtI9qDDFK66DWoh4AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T20:41:16Z",
+              "updatedAt": "2025-08-17T20:41:16Z"
+            }
+          },
+          {
+            "kind": "youtube#comment",
+            "etag": "uqMZv-5q3mrYmBpAVfjQHpPlQLE",
+            "id": "UgyuCtI9qDDFK66DWoh4AaABAg.ALvZYhZQrb-ALwgXZatE9j",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "𝕘𝕒𝕔𝕠𝕣𝕣𝟡𝟡𝟡",
+              "textOriginal": "𝕘𝕒𝕔𝕠𝕣𝕣𝟡𝟡𝟡",
+              "parentId": "UgyuCtI9qDDFK66DWoh4AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T21:41:58Z",
+              "updatedAt": "2025-08-17T21:41:58Z"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "youtube#commentThread",
+      "etag": "-axCna5eQ_sOicXd9vPobVG9sBM",
+      "id": "UgxeMmdREWsLtkVlQrx4AaABAg",
+      "snippet": {
+        "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+        "videoId": "nWWCIhCfnVU",
+        "topLevelComment": {
+          "kind": "youtube#comment",
+          "etag": "WaGKn00yifdgR2A3yK98x5HG7G8",
+          "id": "UgxeMmdREWsLtkVlQrx4AaABAg",
+          "snippet": {
+            "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+            "videoId": "nWWCIhCfnVU",
+            "textDisplay": "ttes",
+            "textOriginal": "ttes",
+            "authorDisplayName": "@nayakazna",
+            "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+            "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+            "authorChannelId": {
+              "value": "UC3KOQaedol_LoewtIs0ImYg"
+            },
+            "canRate": true,
+            "viewerRating": "none",
+            "likeCount": 0,
+            "publishedAt": "2025-08-17T10:56:39Z",
+            "updatedAt": "2025-08-17T10:56:39Z"
+          }
+        },
+        "canReply": true,
+        "totalReplyCount": 1,
+        "isPublic": true
+      },
+      "replies": {
+        "comments": [
+          {
+            "kind": "youtube#comment",
+            "etag": "_9hKSTe8JCSBaw8gg-9HNDtkU8Q",
+            "id": "UgxeMmdREWsLtkVlQrx4AaABAg.ALvXg8K0UOYALwgYJTjFla",
+            "snippet": {
+              "channelId": "UCXWUa5GUl7w1lss-iW747cw",
+              "videoId": "nWWCIhCfnVU",
+              "textDisplay": "𝓰𝓪𝓬𝓸𝓻𝓻𝟗𝟗𝟗",
+              "textOriginal": "𝓰𝓪𝓬𝓸𝓻𝓻𝟗𝟗𝟗",
+              "parentId": "UgxeMmdREWsLtkVlQrx4AaABAg",
+              "authorDisplayName": "@nayakazna",
+              "authorProfileImageUrl": "https://yt3.ggpht.com/_wYNtBOphFi7VG3GTBT2hn2IH6HwvkP4rlugdZGClO4o1VfN-JpATDlqrsvnTDybytWlpi6M=s48-c-k-c0x00ffffff-no-rj",
+              "authorChannelUrl": "http://www.youtube.com/@nayakazna",
+              "authorChannelId": {
+                "value": "UC3KOQaedol_LoewtIs0ImYg"
+              },
+              "canRate": true,
+              "viewerRating": "none",
+              "likeCount": 0,
+              "publishedAt": "2025-08-17T21:42:04Z",
+              "updatedAt": "2025-08-17T21:42:04Z"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
