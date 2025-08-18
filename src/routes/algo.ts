@@ -13,7 +13,7 @@ export function findMatches(
             const JUDOL_REGEX = /\b[a-zA-Z]{3,}[0-9]{2,3}\b/g;
             const matches = matchRegex(normalized, JUDOL_REGEX);
             return returnIndices
-                ? matches.map((m) => normalized.indexOf(m)) // indices
+                ? matches.map((m) => normalized.indexOf(m)) 
                 : matches.length > 0;
         }
         case "bm": {

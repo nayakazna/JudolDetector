@@ -1,8 +1,11 @@
 import { SvelteKitAuth } from "@auth/sveltekit";
 import Google from "@auth/sveltekit/providers/google";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "$env/static/private";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, VERCEL_URL  } from "$env/static/private";
+
+const AUTH_URL = VERCEL_URL ? `https://${VERCEL_URL}` : "http://localhost:5173";
 
 export const {handle} = SvelteKitAuth({
+    trustHost: true,
     providers: [
         Google({
             clientId: GOOGLE_CLIENT_ID,

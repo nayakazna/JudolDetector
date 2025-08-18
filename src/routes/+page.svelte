@@ -74,6 +74,30 @@
         await invalidateAll();
     };
 
+    async function parseFileKeywords(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+        try {
+            const fileContent = event.target?.result as string;            
+            const keywordsArray = fileContent.split('\n').map(k => k.trim()).filter(Boolean);            
+            const keywordsString = keywordsArray.join(',');
+            resolve(keywordsString);
+        } catch (error) {
+            reject(error);
+        }
+        };
+
+        reader.onerror = (error) => {
+        reject(error);
+        };
+
+        reader.readAsText(file);
+    });
+    }
+
+
     const handleDetectComments = async () => {
         if (!validateVideo(videoLink, linkOrId === 'link')) {
             pushErrorNotification(errorMessage);
@@ -84,6 +108,8 @@
             return;
         }
         
+        if (keywordsFile) keywordsInput = await parseFileKeywords(keywordsFile[0]);
+        
         let videoId = "";
         if (linkOrId === 'link') {
             const match = videoLink.match(YOUTUBE_URL_REGEX);
@@ -91,7 +117,8 @@
                 videoId = match[1];
             } 
         } else videoId = videoLink.trim();
-        
+
+
         statusMessage = "Mendeteksi komentar...";
         results = [];
         currentPage = 1;
@@ -129,6 +156,7 @@
             statusMessage = "Terjadi error saat mengambil komentar.";
         }
     };
+
 
     const handleInsertComments = async () => {
         if (!validateVideo(videoLink, linkOrId === 'link')) return;
