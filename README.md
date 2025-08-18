@@ -13,6 +13,7 @@ Aplikasi web untuk mendeteksi dan menghapus komentar promosi judi online ("judol
 ### Bonus
 1. Insert dan delete komentar (unfinished, cuma sampai bikin API dan autentikasi akun Google).
 2. Normalisasi selain 5 font fitur wajib.
+3. Deployment di [https://judol.nayaka.tech/](https://judol.nayaka.tech/).
 
 ## Tech Stack
 
