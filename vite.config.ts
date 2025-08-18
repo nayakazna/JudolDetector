@@ -7,4 +7,10 @@ export default defineConfig({
 		sveltekit(),
 		tailwindcss()
 	],
+	optimizeDeps: {
+		exclude: ["flowbite"],
+	},
+	ssr: {
+		noExternal: ["flowbite", "flowbite-svelte"]
+	}
 });
